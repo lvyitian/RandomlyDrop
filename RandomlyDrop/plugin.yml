@@ -1,0 +1,6 @@
+name: RandomlyDrop
+version: 0.1
+author: lvxinlei
+main: top.dsbbs2.randro.Main
+api-version: 1.16
+softdepend: [Vault]
