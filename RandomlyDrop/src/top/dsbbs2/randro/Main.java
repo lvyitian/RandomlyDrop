@@ -104,7 +104,7 @@ public class Main extends JavaPlugin implements Listener {
     			});
     		});
     		if (tmp.showMsg) {
-    			String itsn=its.length()>0?its.substring(0,its.length()-1):"";
+    			String itsn=its.length()>0?its.substring(0,its.length()-1):"null";
         		msg=String.format(msg, itsn,money_drop[0],exp_drop);
         		e.getEntity().sendMessage(msg);
 			}
