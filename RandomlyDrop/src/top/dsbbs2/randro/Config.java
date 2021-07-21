@@ -8,8 +8,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
-
-import com.google.common.collect.Lists;
+import org.bukkit.inventory.ItemStack;
 
 public class Config {
   public static class WorldSetting{
@@ -30,18 +29,25 @@ public class Config {
   	  {
   		return new SecureRandom().nextInt(100)+1<=Math.min(exp_possibility, 1)*100;
   	  }
+	  public static ItemStack getItemWithoutException(Inventory inv,int slot)
+	  {
+		  try {
+			  return inv.getItem(slot);
+		  }catch(Throwable ignored) {}
+		  return null;
+	  }
 	  public CopyOnWriteArraySet<Integer> randomSlots(Inventory inv)
 	  {
 		  CopyOnWriteArraySet<Integer> r=new CopyOnWriteArraySet<>();
 		  int num=this.slot_amount.getNum();
-		  int nonempty_num=(int)Lists.newArrayList(inv.getContents()).parallelStream().filter(i->i!=null&&i.getAmount()>0&&i.getType()!=Material.AIR).count();
+		  int nonempty_num=(int)slots.parallelStream().map(i->getItemWithoutException(inv,i)).filter(i->i!=null&&i.getAmount()>0&&i.getType()!=Material.AIR).count();
 		  while(r.size()<num)
 		  {
 			  if (r.size()>=nonempty_num) {
 				break;
 			  }
 			  int tmp=this.slots.get(new SecureRandom().nextInt(this.slots.size()));
-			  if(inv.getItem(tmp)!=null&&inv.getItem(tmp).getAmount()>0&&inv.getItem(tmp).getType()!=Material.AIR)
+			  if(getItemWithoutException(inv,tmp)!=null&&inv.getItem(tmp).getAmount()>0&&inv.getItem(tmp).getType()!=Material.AIR)
 			    r.add(tmp);
 		  }
 		  return r;
